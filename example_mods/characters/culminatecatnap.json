@@ -1,0 +1,173 @@
+{
+	"animations": [
+		{
+			"loop": true,
+			"offsets": [
+				-460,
+				-270
+			],
+			"anim": "deathConfirm",
+			"fps": 7,
+			"name": "mindcat stare",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-450,
+				-265
+			],
+			"anim": "idle",
+			"fps": 24,
+			"name": "idle",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-460,
+				-268
+			],
+			"anim": "singRIGHT",
+			"fps": 20,
+			"name": "right",
+			"indices": []
+		},
+		{
+			"offsets": [
+				-402,
+				-218
+			],
+			"loop": false,
+			"fps": 20,
+			"anim": "singUPmiss",
+			"indices": [],
+			"name": "miss"
+		},
+		{
+			"offsets": [
+				-403,
+				-218
+			],
+			"loop": false,
+			"fps": 20,
+			"anim": "singDOWNmiss",
+			"indices": [],
+			"name": "miss"
+		},
+		{
+			"offsets": [
+				-403,
+				-218
+			],
+			"loop": false,
+			"fps": 20,
+			"anim": "singLEFTmiss",
+			"indices": [],
+			"name": "miss"
+		},
+		{
+			"offsets": [
+				-377,
+				-360
+			],
+			"loop": false,
+			"fps": 20,
+			"anim": "singDOWN",
+			"indices": [],
+			"name": "down"
+		},
+		{
+			"offsets": [
+				-403,
+				-220
+			],
+			"loop": false,
+			"fps": 20,
+			"anim": "singRIGHTmiss",
+			"indices": [],
+			"name": "miss"
+		},
+		{
+			"offsets": [
+				-402,
+				-218
+			],
+			"loop": false,
+			"fps": 20,
+			"anim": "firstDeath",
+			"indices": [
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8
+			],
+			"name": "miss"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-262,
+				-278
+			],
+			"anim": "singLEFT",
+			"fps": 20,
+			"name": "left",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-490,
+				-245
+			],
+			"anim": "singUP",
+			"fps": 20,
+			"name": "up",
+			"indices": []
+		},
+		{
+			"loop": true,
+			"offsets": [
+				-402,
+				-218
+			],
+			"anim": "deathLoop",
+			"fps": 20,
+			"name": "miss",
+			"indices": [
+				9,
+				10,
+				11,
+				12,
+				9,
+				10,
+				11,
+				12
+			]
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/control_catnapMad_assets",
+	"position": [
+		-370,
+		-30
+	],
+	"healthicon": "catmind",
+	"flip_x": true,
+	"healthbar_colors": [
+		115,
+		73,
+		150
+	],
+	"camera_position": [
+		-350,
+		320
+	],
+	"sing_duration": 6,
+	"scale": 1.04
+}

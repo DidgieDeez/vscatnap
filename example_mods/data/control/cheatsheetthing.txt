@@ -1,0 +1,12 @@
+heatwave - amount - recommended = 0.5 --- a fucking heatwave lol
+saturation - size - recommended = 1 --- grayscale thing lol
+aberration - aberration - recommended = 0.15 --- chromatic aberration
+aberration - effectTime - recommended = 0.15 --- curved monitor cool lol
+radialBlur - blurWidth - recommended = idk i never used this
+radialBlur - cx - recommended = idk i never used this
+radialBlur - cy - recommended = idk i never used this
+bloom - u_brightness
+bloom - u_range
+bloom - u_brightness
+glitch - size --- weird filter thing
+glitch2 - AMT --- actual glitch shit

@@ -1,0 +1,155 @@
+{
+	"animations": [
+		{
+			"offsets": [
+				-450,
+				-265
+			],
+			"loop": false,
+			"fps": 7,
+			"anim": "idle",
+			"indices": [],
+			"name": "mindcat idle"
+		},
+		{
+			"offsets": [
+				-480,
+				-265
+			],
+			"loop": false,
+			"fps": 8,
+			"anim": "singLEFT",
+			"indices": [],
+			"name": "mindcat left"
+		},
+		{
+			"offsets": [
+				-332,
+				-265
+			],
+			"loop": false,
+			"fps": 8,
+			"anim": "singDOWN",
+			"indices": [],
+			"name": "mindcat down"
+		},
+		{
+			"offsets": [
+				-470,
+				-265
+			],
+			"loop": false,
+			"fps": 8,
+			"anim": "singUP",
+			"indices": [],
+			"name": "mindcat up"
+		},
+		{
+			"offsets": [
+				-460,
+				-268
+			],
+			"loop": false,
+			"fps": 8,
+			"anim": "singRIGHT",
+			"indices": [],
+			"name": "mindcat right"
+		},
+		{
+			"offsets": [
+				-332,
+				-265
+			],
+			"loop": false,
+			"fps": 8,
+			"anim": "singLEFTmiss",
+			"indices": [],
+			"name": "mindcat miss"
+		},
+		{
+			"offsets": [
+				-332,
+				-265
+			],
+			"loop": false,
+			"fps": 8,
+			"anim": "singDOWNmiss",
+			"indices": [],
+			"name": "mindcat miss"
+		},
+		{
+			"offsets": [
+				-332,
+				-265
+			],
+			"loop": false,
+			"fps": 8,
+			"anim": "singUPmiss",
+			"indices": [],
+			"name": "mindcat miss"
+		},
+		{
+			"offsets": [
+				-332,
+				-265
+			],
+			"loop": false,
+			"fps": 8,
+			"anim": "singRIGHTmiss",
+			"indices": [],
+			"name": "mindcat miss"
+		},
+		{
+			"offsets": [
+				-460,
+				-270
+			],
+			"loop": true,
+			"fps": 7,
+			"anim": "firstDeath",
+			"indices": [],
+			"name": "mindcat stare"
+		},
+		{
+			"offsets": [
+				-460,
+				-270
+			],
+			"loop": true,
+			"fps": 7,
+			"anim": "deathLoop",
+			"indices": [],
+			"name": "mindcat stare"
+		},
+		{
+			"offsets": [
+				-460,
+				-270
+			],
+			"loop": true,
+			"fps": 7,
+			"anim": "deathConfirm",
+			"indices": [],
+			"name": "mindcat stare"
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/mindcat",
+	"position": [
+		-850,
+		-570
+	],
+	"healthicon": "catmind",
+	"flip_x": true,
+	"healthbar_colors": [
+		115,
+		73,
+		150
+	],
+	"camera_position": [
+		-630,
+		630
+	],
+	"sing_duration": 6,
+	"scale": 0.64
+}
