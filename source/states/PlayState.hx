@@ -2256,13 +2256,10 @@ class PlayState extends MusicBeatState
 		callOnLuas('onEvent', [eventName, value1, value2, strumTime]);
 	}
 
-	function moveCameraSection(?sec:Null<Int>):Void {
-		if(sec == null) sec = curSection;
-		if(sec < 0) sec = 0;
+	function moveCameraSection():Void {
+		if(SONG.notes[curSection] == null) return;
 
-		if(SONG.notes[sec] == null) return;
-
-		if (gf != null && SONG.notes[sec].gfSection)
+		if (gf != null && SONG.notes[curSection].gfSection)
 		{
 			camFollow.setPosition(gf.getMidpoint().x, gf.getMidpoint().y);
 			camFollow.x += gf.cameraPosition[0] + girlfriendCameraOffset[0];
@@ -2272,9 +2269,16 @@ class PlayState extends MusicBeatState
 			return;
 		}
 
-		var isDad:Bool = (SONG.notes[sec].mustHitSection != true);
-		moveCamera(isDad);
-		callOnLuas('onMoveCamera', [isDad ? 'dad' : 'boyfriend']);
+		if (!SONG.notes[curSection].mustHitSection)
+		{
+			moveCamera(true);
+			callOnLuas('onMoveCamera', ['dad']);
+		}
+		else
+		{
+			moveCamera(false);
+			callOnLuas('onMoveCamera', ['boyfriend']);
+		}
 	}
 
 	var cameraTwn:FlxTween;
@@ -3183,10 +3187,14 @@ class PlayState extends MusicBeatState
 
 	override function sectionHit()
 	{
+		super.sectionHit();
+
 		if (SONG.notes[curSection] != null)
 		{
 			if (generatedMusic && !endingSong && !isCameraOnForcedPos)
+			{
 				moveCameraSection();
+			}
 
 			if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.data.camZooms)
 			{
@@ -3205,8 +3213,7 @@ class PlayState extends MusicBeatState
 			setOnLuas('altAnim', SONG.notes[curSection].altAnim);
 			setOnLuas('gfSection', SONG.notes[curSection].gfSection);
 		}
-		super.sectionHit();
-
+		
 		setOnLuas('curSection', curSection);
 		callOnLuas('onSectionHit', []);
 	}

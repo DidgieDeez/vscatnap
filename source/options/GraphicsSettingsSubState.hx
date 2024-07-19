@@ -9,7 +9,7 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 	public function new()
 	{
 		title = 'Graphics';
-		rpcTitle = 'Graphics Settings Menu'; //for Discord Rich Presence
+		rpcTitle = 'Video and UI Menu'; //for Discord Rich Presence
 
 		boyfriend = new Character(840, 170, 'bf', true);
 		boyfriend.setGraphicSize(Std.int(boyfriend.width * 0.75));
@@ -17,7 +17,7 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		boyfriend.dance();
 		boyfriend.animation.finishCallback = function (name:String) boyfriend.dance();
 		boyfriend.visible = false;
-
+		
 		//I'd suggest using "Low Quality" as an example for making your own option since it is the simplest here
 		var option:Option = new Option('Low Quality', //Name
 			'If checked, disables some background details,\ndecreases loading times and improves performance.', //Description
@@ -44,6 +44,74 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 			'cacheOnGPU',
 			'bool');
 		addOption(option);
+		
+		var noteSplashes:Array<String> = Mods.mergeAllTextsNamed('images/noteSplashes/list.txt');
+		if(noteSplashes.length > 0)
+		{
+			if(!noteSplashes.contains(ClientPrefs.data.splashSkin))
+				ClientPrefs.data.splashSkin = ClientPrefs.defaultData.splashSkin; //Reset to default if saved splashskin couldnt be found
+
+			noteSplashes.insert(0, ClientPrefs.defaultData.splashSkin); //Default skin always comes first
+			var option:Option = new Option('Note Splashes',
+				"Select your prefered Note Splash variation or turn it off.",
+				'splashSkin',
+				'string',
+				noteSplashes);
+			addOption(option);
+		}
+		
+		var option:Option = new Option('Note Splash Opacity',
+			'How much transparent should the Note Splashes be.',
+			'splashAlpha',
+			'percent');
+		option.scrollSpeed = 1.6;
+		option.minValue = 0.0;
+		option.maxValue = 1;
+		option.changeValue = 0.1;
+		option.decimals = 1;
+		addOption(option);
+
+		var option:Option = new Option('Hide HUD',
+			'If checked, hides most HUD elements.',
+			'hideHud',
+			'bool');
+		addOption(option);
+		
+		var option:Option = new Option('Time Bar',
+			"What should the Time Bar display?",
+			'timeBarType',
+			'string',
+			['Time Left', 'Time Elapsed', 'Song Name', 'Disabled']);
+		addOption(option);
+
+		var option:Option = new Option('Flashing Lights',
+			"Uncheck this if you're sensitive to flashing lights!",
+			'flashing',
+			'bool');
+		addOption(option);
+
+		var option:Option = new Option('Camera Zooms',
+			"If unchecked, the camera won't zoom in on a beat hit.",
+			'camZooms',
+			'bool');
+		addOption(option);
+
+		var option:Option = new Option('Score Text Zoom on Hit',
+			"If unchecked, disables the Score text zooming\neverytime you hit a note.",
+			'scoreZoom',
+			'bool');
+		addOption(option);
+
+		var option:Option = new Option('Health Bar Opacity',
+			'How much transparent should the health bar and icons be.',
+			'healthBarAlpha',
+			'percent');
+		option.scrollSpeed = 1.6;
+		option.minValue = 0.0;
+		option.maxValue = 1;
+		option.changeValue = 0.1;
+		option.decimals = 1;
+		addOption(option);
 
 		#if !html5 //Apparently other framerates isn't correctly supported on Browser? Probably it has some V-Sync shit enabled by default, idk
 		var option:Option = new Option('Framerate',
@@ -59,6 +127,30 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		option.displayFormat = '%v FPS';
 		option.onChange = onChangeFramerate;
 		#end
+		
+		#if !mobile
+		var option:Option = new Option('FPS Counter',
+			'If unchecked, hides FPS Counter.',
+			'showFPS',
+			'bool');
+		addOption(option);
+		option.onChange = onChangeFPSCounter;
+		#end
+		
+		
+		#if DISCORD_ALLOWED
+		var option:Option = new Option('Discord Rich Presence',
+			"Uncheck this to prevent accidental leaks, it will hide the Application from your \"Playing\" box on Discord",
+			'discordRPC',
+			'bool');
+		addOption(option);
+		#end
+
+		var option:Option = new Option('Combo Stacking',
+			"If unchecked, Ratings and Combo won't stack, saving on System Memory and making them easier to read",
+			'comboStacking',
+			'bool');
+		addOption(option);
 
 		super();
 		insert(1, boyfriend);
@@ -88,6 +180,14 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 			FlxG.updateFramerate = ClientPrefs.data.framerate;
 		}
 	}
+	
+	#if !mobile
+	function onChangeFPSCounter()
+	{
+		if(Main.fpsVar != null)
+			Main.fpsVar.visible = ClientPrefs.data.showFPS;
+	}
+	#end
 
 	override function changeSelection(change:Int = 0)
 	{

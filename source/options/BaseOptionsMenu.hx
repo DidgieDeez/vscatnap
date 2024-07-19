@@ -16,17 +16,18 @@ class BaseOptionsMenu extends MusicBeatSubstate
 	private var curSelected:Int = 0;
 	private var optionsArray:Array<Option>;
 
-	private var grpOptions:FlxTypedGroup<Alphabet>;
-	private var checkboxGroup:FlxTypedGroup<CheckboxThingie>;
-	private var grpTexts:FlxTypedGroup<AttachedText>;
+	private var grpOptions:FlxTypedGroup<FlxText>;
+	private var checkboxGroup:FlxTypedGroup<FlxText>;
+	private var grpTexts:FlxTypedGroup<FlxText>;
 
-	private var descBox:FlxSprite;
 	private var descText:FlxText;
 
 	public var title:String;
 	public var rpcTitle:String;
 
 	public var bg:FlxSprite;
+	
+	public var selection:FlxSprite;
 	public function new()
 	{
 		super();
@@ -38,62 +39,63 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		DiscordClient.changePresence(rpcTitle, null);
 		#end
 		
-		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		bg.color = 0xFFea71fd;
+		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		bg.screenCenter();
-		bg.antialiasing = ClientPrefs.data.antialiasing;
 		add(bg);
 
 		// avoids lagspikes while scrolling through menus!
-		grpOptions = new FlxTypedGroup<Alphabet>();
+		grpOptions = new FlxTypedGroup<FlxText>();
 		add(grpOptions);
-
-		grpTexts = new FlxTypedGroup<AttachedText>();
+		
+		grpTexts = new FlxTypedGroup<FlxText>();
 		add(grpTexts);
 
-		checkboxGroup = new FlxTypedGroup<CheckboxThingie>();
+		checkboxGroup = new FlxTypedGroup<FlxText>();
 		add(checkboxGroup);
+		
+		selection = new FlxSprite(50, 0).loadGraphic(Paths.image('pausecircle'));
+		selection.scale.set(0.6, 0.6);
+		selection.updateHitbox();
+		add(selection);
 
-		descBox = new FlxSprite().makeGraphic(1, 1, FlxColor.BLACK);
-		descBox.alpha = 0.6;
-		add(descBox);
 
 		var titleText:Alphabet = new Alphabet(75, 45, title, true);
 		titleText.setScale(0.6);
 		titleText.alpha = 0.4;
-		add(titleText);
+		//add(titleText);
 
-		descText = new FlxText(50, 600, 1180, "", 32);
+		descText = new FlxText(50, 650, 1180, "", 32);
 		descText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		descText.scrollFactor.set();
 		descText.borderSize = 2.4;
 		add(descText);
 
 		for (i in 0...optionsArray.length)
-		{
-			var optionText:Alphabet = new Alphabet(290, 260, optionsArray[i].name, false);
-			optionText.isMenuItem = true;
+		{	
+			var optionText:FlxText = new FlxText(100, 50, 0, optionsArray[i].name + ':', true);
+			optionText.setFormat(Paths.font("vcr.ttf"), 30,FlxColor.fromRGB(255, 255, 255));
+			optionText.y += (35 * i);
+			optionText.ID = i;
+			optionText.antialiasing = false;
 			/*optionText.forceX = 300;
 			optionText.yMult = 90;*/
-			optionText.targetY = i;
 			grpOptions.add(optionText);
 
 			if(optionsArray[i].type == 'bool')
 			{
-				var checkbox:CheckboxThingie = new CheckboxThingie(optionText.x - 105, optionText.y, Std.string(optionsArray[i].getValue()) == 'true');
-				checkbox.sprTracker = optionText;
+				var checkbox:FlxText = new FlxText(optionText.x + optionText.width + 10, optionText.y, 0,Std.string(optionsArray[i].getValue()), true);
+				checkbox.setFormat(Paths.font("vcr.ttf"), 30,FlxColor.fromRGB(255, 255, 255));
 				checkbox.ID = i;
+				checkbox.antialiasing = false;
 				checkboxGroup.add(checkbox);
 			}
 			else
 			{
-				optionText.x -= 80;
-				optionText.startPosition.x -= 80;
 				//optionText.xAdd -= 80;
-				var valueText:AttachedText = new AttachedText('' + optionsArray[i].getValue(), optionText.width + 60);
-				valueText.sprTracker = optionText;
-				valueText.copyAlpha = true;
+				var valueText:FlxText = new FlxText(optionText.x + optionText.width + 10, optionText.y,0,'' + optionsArray[i].getValue(), true);
+				valueText.setFormat(Paths.font("vcr.ttf"), 30,FlxColor.fromRGB(255, 255, 255));
 				valueText.ID = i;
+				valueText.antialiasing = false;
 				grpTexts.add(valueText);
 				optionsArray[i].child = valueText;
 			}
@@ -148,7 +150,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		{
 			if(curOption.type == 'bool')
 			{
-				if(controls.ACCEPT)
+				if(controls.ACCEPT || controls.UI_LEFT_P || controls.UI_RIGHT_P)
 				{
 					FlxG.sound.play(Paths.sound('scrollMenu'));
 					curOption.setValue((curOption.getValue() == true) ? false : true);
@@ -404,13 +406,11 @@ class BaseOptionsMenu extends MusicBeatSubstate
 				text = InputFormatter.getGamepadName(FlxGamepadInputID.fromString(text));
 		}
 
-		var bind:AttachedText = cast option.child;
-		var attach:AttachedText = new AttachedText(text, bind.offsetX);
-		attach.sprTracker = bind.sprTracker;
-		attach.copyAlpha = true;
+		var bind:FlxText = cast option.child;
+		var attach:FlxText = new FlxText(bind.x,bind.y,0,text,true);
+		attach.setFormat(Paths.font("vcr.ttf"), 30,bind.color);
 		attach.ID = bind.ID;
-		playstationCheck(attach);
-		attach.scaleX = Math.min(1, MAX_KEYBIND_WIDTH / attach.width);
+		attach.antialiasing = false;
 		attach.x = bind.x;
 		attach.y = bind.y;
 
@@ -479,27 +479,25 @@ class BaseOptionsMenu extends MusicBeatSubstate
 
 		descText.text = optionsArray[curSelected].description;
 		descText.screenCenter(Y);
-		descText.y += 270;
+		descText.y += 300;
 
 		var bullShit:Int = 0;
+		
+		selection.y = grpOptions.members[curSelected].y;
 
-		for (item in grpOptions.members)
-		{
-			item.targetY = bullShit - curSelected;
-			bullShit++;
+		
+		for (item in grpOptions.members) {
 
-			item.alpha = 0.6;
-			if (item.targetY == 0) item.alpha = 1;
+			if (curSelected == item.ID && item != null)
+			{
+				item.color = FlxColor.fromRGB(200, 200, 200);
+			}
+			else
+			{
+				item.color = FlxColor.fromRGB(255, 255, 255);
+			}
 		}
-		for (text in grpTexts)
-		{
-			text.alpha = 0.6;
-			if(text.ID == curSelected) text.alpha = 1;
-		}
 
-		descBox.setPosition(descText.x - 10, descText.y - 10);
-		descBox.setGraphicSize(Std.int(descText.width + 20), Std.int(descText.height + 25));
-		descBox.updateHitbox();
 
 		curOption = optionsArray[curSelected]; //shorter lol
 		FlxG.sound.play(Paths.sound('scrollMenu'));
@@ -507,5 +505,5 @@ class BaseOptionsMenu extends MusicBeatSubstate
 
 	function reloadCheckboxes()
 		for (checkbox in checkboxGroup)
-			checkbox.daValue = Std.string(optionsArray[checkbox.ID].getValue()) == 'true'; //Do not take off the Std.string() from this, it will break a thing in Mod Settings Menu
+			checkbox.text = Std.string(optionsArray[checkbox.ID].getValue()); //Do not take off the Std.string() from this, it will break a thing in Mod Settings Menu
 }
